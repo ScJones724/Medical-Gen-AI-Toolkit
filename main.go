@@ -28,6 +28,17 @@ var clinicalTips = []string{
     "Antibiotics: They work for bacterial infections only — not for viral colds or flu.",
 }
 
+// The Intercom (Loading Messages)
+var loadingMessages = []string{
+	"☕ Taking a quick coffee break before rounds...",
+	"✍️ Double-checking the intern's notes...",
+	"🏥 Navigating the hospital corridors...",
+	"🔦 Performing a quick systemic review...",
+	"🔍 Squinting at the consultant's handwriting...",
+	"🥪 Swallowing a sandwich between patients...",
+	"📜 Checking if the lab results finally dropped...",
+	"🩺 Just one more patient... I promise.",
+}
 func main() {
 	// These are the "rules" of our clinic:
 	http.HandleFunc("/", handleIndex)      // Home page
@@ -44,13 +55,24 @@ func handleIndex(w http.ResponseWriter, r *http.Request) {
 }
 
 func handleGetTip(w http.ResponseWriter, r *http.Request) {
-	// Simulate "thinking" time (500ms)
-	time.Sleep(500 * time.Millisecond)
+    // 1. Pick a random loading message
+    rand.Seed(time.Now().UnixNano())
+    loadMsg := loadingMessages[rand.Intn(len(loadingMessages))]
+    
+    // 2. Simulate "thinking" time (800ms for extra drama)
+    time.Sleep(800 * time.Millisecond)
 
-	// Pick a random clinical fact
-	rand.Seed(time.Now().UnixNano())
-	tip := clinicalTips[rand.Intn(len(clinicalTips))]
+    // 3. Pick the clinical fact
+    tip := clinicalTips[rand.Intn(len(clinicalTips))]
 
-	// Send back the tip formatted as HTML
-	fmt.Fprintf(w, "<div class='p-4 bg-blue-100 border-l-4 border-blue-500 text-blue-700 italic'>%s</div>", tip)
+    // 4. Send back the Tip + the loading message persona
+    // We are adding the 'loadMsg' at the bottom in a small italic font
+    fmt.Fprintf(w, `
+    <div class="p-6 bg-white/20 border-l-8 border-white/40 text-white italic rounded-xl shadow-inner transition-all duration-500">
+        %s
+        <div class="text-[10px] mt-4 text-blue-200 font-black uppercase tracking-[0.3em] opacity-70 animate-pulse">
+            Status: <span class="border-r-2 border-blue-200 pr-1">%s</span>
+        </div>
+    </div>
+`, tip, loadMsg)
 }

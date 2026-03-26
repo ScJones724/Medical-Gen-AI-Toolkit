@@ -107,7 +107,7 @@ http.HandleFunc("/get-tip", func(w http.ResponseWriter, r *http.Request) {
 ```
 
 **Expected Output:**  
-A *"Glassmorphism"* styled card that pulses while *"Paging the Senior AI Registrar"* and then displays a clinical pearl.
+A *"Glassmorphism"* styled card that pulses while *"I know this one. Let me make sure I'm not gaslighting myself..."* and then displays a clinical pearl.
 
 ---
 
@@ -218,6 +218,7 @@ go run main.go
 ```
 
 ---
+**PS:** *"Anyone can use, copy, or change this code for free, but I (Jones) am not responsible if something goes wrong (No Liability)."*
 
 *Made with ❤️ by a Clinical Officer who codes.*
 ```
