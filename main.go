@@ -6,6 +6,7 @@ import (
 	"log"
 	"math/rand"
 	"net/http"
+	"os"
 	"time"
 )
 
@@ -41,11 +42,19 @@ var loadingMessages = []string{
 }
 func main() {
 	// These are the "rules" of our clinic:
-	http.HandleFunc("/", handleIndex)      // Home page
-	http.HandleFunc("/get-tip", handleGetTip) // When user clicks 'Generate'
+    http.HandleFunc("/", handleIndex)      // Home page
+    http.HandleFunc("/get-tip", handleGetTip) // When user clicks 'Generate'
 
-	fmt.Println("Server started at http://localhost:8080")
-	log.Fatal(http.ListenAndServe(":8080", nil))
+    // 2. THE CHANGE: Ask Render what port to use
+    port := os.Getenv("PORT")
+    if port == "" {
+        port = "8080" // If we are just testing at home, use 8080
+    }
+
+    fmt.Println("Server starting on port", port)
+    
+    // 3. THE CHANGE: Listen on the assigned port
+    log.Fatal(http.ListenAndServe(":"+port, nil))
 }
 
 func handleIndex(w http.ResponseWriter, r *http.Request) {
